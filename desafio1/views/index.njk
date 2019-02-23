@@ -1,0 +1,10 @@
+<h1>Valida Idade</h1>
+
+{% if error %}
+<p><strong>Digite uma idade válidade</strong></p>
+{% endif %}
+
+<form action="/check" method="post">
+	<input type="text" name="age" placeholder="Digite sua idade" required="true">
+	<button type="submit">Enviar</button>
+</form>
