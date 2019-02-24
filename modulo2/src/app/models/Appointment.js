@@ -5,10 +5,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Appointment.associate = models => {
     Appointment.belongsTo(models.User, {
-      foreingKey: 'user_id'
+      foreignKey: 'user_id'
     })
     Appointment.belongsTo(models.User, {
-      foreingKey: 'provider_id'
+      foreignKey: 'provider_id'
     })
   }
 
