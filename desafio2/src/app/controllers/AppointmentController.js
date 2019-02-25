@@ -1,4 +1,4 @@
-const sequelize = require('sequelize')
+const moment = require('moment')
 
 const {
   User,
@@ -10,7 +10,7 @@ class AppointmentController {
     const appointments = await Appointment.findAll({
       attributes: [
         'id',
-        [sequelize.fn('to_char', sequelize.col('date'), 'DD/MM/YYY às HH24:MI'), 'date']
+        'date'
       ],
       where: {
         user_id: req.session.user.id
@@ -25,7 +25,14 @@ class AppointmentController {
     })
 
     return res.render('appointments/index', {
-      appointments
+      appointments: appointments.map(a => {
+        return {
+          id: a.id,
+          date: moment(a.date).format('DD/MM/YYYY'),
+          time: moment(a.date).format('HH:mm'),
+          User: a.User
+        }
+      })
     })
   }
 
