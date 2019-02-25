@@ -2,7 +2,7 @@
 
 {% block body %}
   <div class="content">
-    <strong>Agendado horário</strong>
+    <strong>Agendar horário</strong>
 
     <div class="provider">
       <div>
@@ -17,7 +17,12 @@
       <div id="hours">
       </div>
 
-      <button type="submit">Agendar</button>
+
+      <div class="buttons-wrapper">
+        <a href="/app/dashboard" class="back">Voltar</a>
+        <button type="submit" disabled="true">Agendar</button>
+      </div>
+
     </form>
   </div>
 
@@ -26,6 +31,8 @@
       minDate: new Date(),
       dateFormat: 'd/m/Y',
       onChange: function(date) {
+        document.querySelector('button[type=submit]').setAttribute('disabled', true)
+
         fetch(`/app/available/{{ provider.id }}?date=${date[0].getTime()}`)
         .then(function(response) {
           response
@@ -36,5 +43,15 @@
         })
       }
     })
+
+    function handleCreateAppointment() {
+      document.querySelector('#hours').addEventListener('click', function(event) {
+        if (event.target.name == 'date' && event.target.checked) {
+          document.querySelector('button[type=submit]').removeAttribute('disabled')
+        }
+      })
+    }
+
+    document.addEventListener('DOMContentLoaded', handleCreateAppointment);
   </script>
 {% endblock %}

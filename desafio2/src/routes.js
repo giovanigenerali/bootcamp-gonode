@@ -17,6 +17,7 @@ const AvailableController = require('./app/controllers/AvailableController')
 routes.use((req, res, next) => {
   res.locals.flashSuccess = req.flash('success')
   res.locals.flashError = req.flash('error')
+  res.locals.flashInfo = req.flash('info')
 
   return next()
 })
@@ -35,8 +36,11 @@ routes.get('/app/logout', SessionController.destroy)
 
 routes.get('/app/dashboard', DashboardController.index)
 
+routes.get('/app/appointments', AppointmentController.index)
 routes.get('/app/appointments/new/:provider', AppointmentController.create)
 routes.post('/app/appointments/new/:provider', AppointmentController.store)
+routes.delete('/app/appointments/:id', AppointmentController.remove)
+
 routes.get('/app/available/:provider', AvailableController.index)
 
 module.exports = routes
