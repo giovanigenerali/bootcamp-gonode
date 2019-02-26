@@ -1,41 +1,9 @@
-const moment = require('moment')
-
 const {
   User,
   Appointment
 } = require('../models')
 
 class AppointmentController {
-  async index (req, res) {
-    const appointments = await Appointment.findAll({
-      attributes: [
-        'id',
-        'date'
-      ],
-      where: {
-        user_id: req.session.user.id
-      },
-      include: [{
-        model: User,
-        attributes: ['name', 'avatar']
-      }],
-      order: [
-        ['date', 'ASC']
-      ]
-    })
-
-    return res.render('appointments/index', {
-      appointments: appointments.map(a => {
-        return {
-          id: a.id,
-          date: moment(a.date).format('DD/MM/YYYY'),
-          time: moment(a.date).format('HH:mm'),
-          User: a.User
-        }
-      })
-    })
-  }
-
   async create (req, res) {
     const provider = await User.findByPk(req.params.provider)
 
@@ -61,7 +29,7 @@ class AppointmentController {
       date
     })
 
-    return res.redirect('/app/dashboard')
+    return res.redirect('/app/schedule')
   }
 
   async remove (req, res) {

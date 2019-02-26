@@ -176,7 +176,7 @@ body {
   background: #444;
 }
 
-.main-wrapper .content a.appointments {
+.main-wrapper .content a.schedule {
   background: #569ff7;
   text-decoration: none;
   height: 40px;
@@ -191,7 +191,7 @@ body {
   width: 100%;
 }
 
-.main-wrapper .content a.appointments:hover {
+.main-wrapper .content a.schedule:hover {
   background: #427abd;
 }
 

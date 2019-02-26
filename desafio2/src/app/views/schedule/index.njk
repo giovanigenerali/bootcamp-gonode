@@ -2,29 +2,50 @@
 
 {% block body %}
   <div class="content">
+
+    {% if (user.provider) %}
+
+    <strong>Olá, {{ user.name }}</strong>
+    <p class="msg" style="{% if (appointments.length == 0) %}display:none;{% endif %}">Sua lista de clientes agendados:</p>
+
+    {% else %}
+
     <strong>Agendamentos</strong>
+    <p class="msg" style="{% if (appointments.length == 0) %}display:none;{% endif %}">Sua lista de horários agendados:</p>
+
+    {% endif %}
 
     <div class="appointments">
 
-    <p id="msg_nenhum_agendamento" style="{% if (appointments.length > 0) %}display:none;{% endif %}">Você não possui nenhum agendamento</p>
+    <p id="msg_nenhum_agendamento" style="{% if (appointments.length > 0) %}display:none;{% endif %}">
+      Você não possui nenhum {% if (user.provider) %}cliente agendado{% else %}agendamento{% endif %}
+    </p>
 
     {% for appointment in appointments %}
     <div class="appointment">
       <div>
-        <img src="/files/{{ appointment.User.avatar }}">
+        <img src="/files/{% if (user.provider) %}{{ appointment.user.avatar }}{% else %}{{ appointment.provider.avatar }}{% endif %}">
         <div class="info">
-          <strong>{{ appointment.date }} às {{ appointment.time }}</strong>
-          <p>{{ appointment.User.name }}</p>
+          <strong>{{ appointment.date | date("DD/MM/YYYY") }} às {{ appointment.date | date("HH:mm") }}</strong>
+          <p>{% if (user.provider) %}{{ appointment.user.name }}{% else %}{{ appointment.provider.name }}{% endif %}</p>
         </div>
       </div>
+
+      {% if not (user.provider) %}
       <button class="remove-appointment" data-id="{{ appointment.id }}">-</button>
+      {% endif %}
+
     </div>
     {% endfor %}
 
     </div>
 
     <div class="buttons-wrapper">
+      {% if (user.provider) %}
+      <a href="/app/logout" class="logout">Sair</a>
+      {% else %}
       <a href="/app/dashboard" class="back">Voltar</a>
+      {% endif %}
     </div>
 
   </div>
@@ -48,14 +69,17 @@
               event.target.parentNode.remove()
 
               if (document.querySelectorAll('.appointment').length == 0) {
+                document.querySelector('#msg').style = "";
                 document.querySelector('#msg_nenhum_agendamento').style = "";
               }
-
             }
 
           })
+
         }
+
       })
+
     }
 
     document.addEventListener('DOMContentLoaded', handleDeleteAppointment);
