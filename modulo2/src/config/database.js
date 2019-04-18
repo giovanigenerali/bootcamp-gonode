@@ -1,3 +1,5 @@
+# docker run --name postgres -p 5432:5432 -d -t kartoza/postgis
+
 module.exports = {
   dialect: 'postgres',
   host: '127.0.0.1',
